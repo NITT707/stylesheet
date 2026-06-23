@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Photo Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="addTabIndex()">
+    <header>
+        <h1>Interactive Photo Gallery</h1>
+        <p>Use your mouse or keyboard to explore the gallery. Click on thumbnails or use Tab and Arrow keys.</p>
+    </header>
+
+    <main id="main-content">
+        <!-- Preview Section -->
+        <div id="image">
+            <img id="previewImage" src="" alt="Preview" style="display: none;">
+            <p id="previewText">Hover over an image below to display here.</p>
+        </div>
+
+        <!-- Image Gallery -->
+        <section class="gallery">
+            <img id="pic1" 
+                 src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=200&fit=crop" 
+                 alt="Silver laptop computer on wooden desk with keyboard and mouse">
+            
+            <img id="pic2" 
+                 src="https://images.unsplash.com/photo-1588872657840-790ff3bde172?w=300&h=200&fit=crop" 
+                 alt="Modern ultrabook laptop displaying colorful wallpaper">
+            
+            <img id="pic3" 
+                 src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=200&fit=crop" 
+                 alt="Close-up of laptop keyboard with illuminated keys">
+            
+            <img id="pic4" 
+                 src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=300&h=200&fit=crop" 
+                 alt="Professional setup with multiple computer monitors and workspace">
+            
+            <img id="pic5" 
+                 src="https://images.unsplash.com/photo-1516321318423-f06f70d504d0?w=300&h=200&fit=crop" 
+                 alt="Compact laptop with thin bezels and modern design">
+            
+            <img id="pic6" 
+                 src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=300&h=200&fit=crop" 
+                 alt="High-performance gaming laptop with RGB lighting">
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Interactive Photo Gallery. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // upDate function - Updates the preview when hovering or focusing on an image
+        function upDate(previewPic) {
+            console.log("upDate function triggered");
+            console.log("previewPic:", previewPic);
+            console.log("alt:", previewPic.alt);
+            console.log("src:", previewPic.src);
+
+            // Update the preview image
+            const previewImage = document.getElementById("previewImage");
+            const previewText = document.getElementById("previewText");
+            
+            previewImage.src = previewPic.src;
+            previewImage.alt = previewPic.alt;
+            previewImage.style.display = "block";
+            
+            previewText.textContent = previewPic.alt;
+            
+            console.log("Preview image updated to:", previewImage.src);
+        }
+
+        // undo function - Restores the original state when mouse leaves or focus is lost
+        function undo() {
+            console.log("undo function triggered");
+
+            // Reset the preview image
+            const previewImage = document.getElementById("previewImage");
+            const previewText = document.getElementById("previewText");
+            
+            previewImage.src = "";
+            previewImage.style.display = "none";
+            previewText.textContent = "Hover over an image below to display here.";
+            
+            console.log("Image preview cleared");
+        }
+
+        // addTabIndex function - Adds tabindex attributes to all images and sets up keyboard accessibility
+        function addTabIndex() {
+            console.log("addTabIndex function triggered");
+
+            // Get all images in the gallery
+            const images = document.querySelectorAll(".gallery img");
+
+            // Loop through each image and add tabindex attribute
+            for (let i = 0; i < images.length; i++) {
+                images[i].setAttribute("tabindex", "0");
+                
+                // Add onfocus and onblur event listeners
+                images[i].addEventListener("mouseover", function() {
+                    upDate(this);
+                });
+                
+                images[i].addEventListener("mouseout", function() {
+                    undo();
+                });
+                
+                images[i].addEventListener("focus", function() {
+                    upDate(this);
+                });
+                
+                images[i].addEventListener("blur", function() {
+                    undo();
+                });
+            }
+
+            console.log(`Successfully added tabindex and event listeners to ${images.length} images`);
+        }
+    </script>
+</body>
+</html>
